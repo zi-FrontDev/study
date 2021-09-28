@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+<style>
+body {background-color: #27b3c0;}
+input {font-family: 'Jua', sans-serif;}
+.wrap {text-align: center; font-family: 'Jua', sans-serif;}
+.wrap .content {position: relative; margin: 0 auto; padding-top: 10vh; width: 1080px; min-height: 60vh;}
+.wrap h1 {font-size: 60px; font-weight: normal; color: #fff; letter-spacing: 1.25px;}
+.top-cont {font-size: 30px; color: #fff}
+.top-cont div {margin-bottom: 20px;}
+.top-cont input {padding: 10px; border: 0; background: transparent; font-size: 30px; color: #fff}
+.top-cont input:focus {outline: none}
+.top-cont .history {padding: 20px;}
+
+.bottom-cont {padding-top: 100px; height: 500px; background: url(./bg.jpg)no-repeat right top;}
+.bottom-cont .info {font-size: 48px;}
+</style>
+<script>
+window.addEventListener('DOMContentLoaded', function(){
+    let keyword = document.querySelector('.keyword');
+    let int = document.querySelector('.int');
+    let history = document.querySelector('.history');
+    let info = document.querySelector('.info');
+    let btnRefresh = document.querySelector('.btn-refresh');
+    let btnSubmit = document.querySelector('.btn-submit');
+    let historyStr = [];
+    let word = [
+        '홈페이지',
+        '코리아',
+        '개발자',
+        '수건',
+        '양말',
+        '신발',
+        '가방',
+        '구두',
+        '시간',
+        '투자'
+    ];
+
+    fnRandom();
+    //초기화 설정
+    function fnRandom(){
+        history.innerHTML = '';
+        info.innerText = '입력해~';
+        int.value = '';
+
+        //랜덤 숫자 만들기
+        let randomIdx = [];
+        let randomNum = 0;
+        for(let i = 0; i < word.length; i++){
+            randomNum = Math.floor(Math.random() * 10); //반올림
+            if(randomIdx.indexOf(randomNum) === -1){
+                randomIdx.push(randomNum);
+
+            } else {
+                i--;
+            }
+        } 
+
+        keyword.value = word[randomIdx[randomNum]];
+    }
+
+    btnSubmit.addEventListener('click', gameStart);
+    int.addEventListener('keyup', function(){
+        if(window.event.keyCode == 13){ //엔터 이벤트
+            gameStart();
+        }
+    });
+
+
+    //게임 실행
+    function gameStart(){
+        let keywordVal = keyword.value;
+        let val = int.value;
+        let keyStr = keywordVal.charAt(keywordVal.length-1);
+        let intStr = val.charAt(val[0]);
+
+        if( keyStr == intStr ){
+            historyStr.push(val);
+            let spanElm = document.createElement('div');
+            let spanTxt = document.createTextNode(val);
+            spanElm.appendChild(spanTxt);
+            history.appendChild(spanElm);
+            info.innerText = '오홍~';
+
+            keyword.value = val;
+            int.value = '';
+
+
+        } else {
+            info.innerText = '아니야~';
+        }
+        
+    }
+
+    
+    btnRefresh.addEventListener('click', fnRandom);
+
+
+});
+
+</script>
+</head>
+<body>
+<div class="wrap">
+    <div class="content">
+        <div class="top-cont">
+            <h1>끝말잇기</h1>
+            <div class="history">
+            </div>
+            <label>제시어 :<input type="text" name="" id="" class="keyword" readonly></label>
+        </div>
+        <div class="bottom-cont">
+            <p class="info">입력해~</p>
+            <button class="btn-refresh">다시하기</button>
+            <input type="text" name="" class="int" value="">
+            <button class="btn-submit">입력</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
